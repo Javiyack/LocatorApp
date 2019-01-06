@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">LocatorApp</string>
+    <string name="label_username">nombre de usuario</string>
+    <string name="label_password">contraseña</string>
+    <string name="label_login">Entrar</string>
+
+    <string name="msg_wrong_username">Nombre de usuario incorrecto</string>
+    <string name="msg_wrong_password">Contraseña icorrecta</string>
+    <string name="msg_wrong_hardwareId">Identificador de dispositivo incorrecto</string>
+    <string name="msg_login_error">Error desconocido</string>
+
+    <string name="get_location">Get Location</string>
+    <string name="android_image">Android Image</string>
+    <string name="textview_hint">Press the button to start tracking your
+        location.
+    </string>
+    <string name="location_permission_denied">Location permissions denied,
+        please enable the permissions to use this app.
+    </string>
+    <string name="address_text">"Address: %1$s \n Timestamp: %2$tr"</string>
+    <string name="no_location">Localizacion no disponible</string>
+    <string name="no_address_found">Direccion no encontrada</string>
+    <string name="loading">Cargando…</string>
+    <string name="service_not_available">Servicio no disponible</string>
+    <string name="invalid_lat_long_used">Invalid coordinates used</string>
+    <string name="start_tracking_location">Start tracking location</string>
+    <string name="stop_tracking_location">Stop tracking location</string>
+    <string name="msg_save_ok">Guardado con éxito</string>
+    <string name="msg_save_failed">Fallo al guardar</string>
+    <string name="msg_server_conection_failed">Sin respuesta del servidor</string>
+</resources>
