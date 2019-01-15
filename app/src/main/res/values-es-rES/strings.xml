@@ -9,6 +9,19 @@
     <string name="msg_wrong_password">Contraseña icorrecta</string>
     <string name="msg_wrong_hardwareId">Identificador de dispositivo incorrecto</string>
     <string name="msg_login_error">Error desconocido</string>
+    <string name="msg_save_error">Save error</string>
+    <string name="msg_locator_service_error">Locator service error</string>
+    <string name="msg_app_info">Aplication error</string>
+    <string name="msg_unknown_server_response">Respuesta del servidor desconocida</string>
+    <string name="msg_http_error">Error HTTP desconocido</string>
+    <string name="msg_unknown_error">Error desconocido</string>
+
+    <string name="local_service_label">Local Service</string>
+    <string name="local_service_started">Local Service started</string>
+    <string name="local_service_stopped">Local Service stoped</string>
+    <string name="local_service_connected">Local Service connected</string>
+    <string name="local_service_disconnected">Local Service disconnected</string>
+
 
     <string name="get_location">Get Location</string>
     <string name="android_image">Android Image</string>
@@ -29,4 +42,20 @@
     <string name="msg_save_ok">Guardado con éxito</string>
     <string name="msg_save_failed">Fallo al guardar</string>
     <string name="msg_server_conection_failed">Sin respuesta del servidor</string>
+
+
+    <string name="launch_activity">Launch activity</string>
+    <string name="location_unknown">Location unknown</string>
+    <string name="location_updates_label">Location Updates</string>
+
+    <string name="permission_rationale">Location permission is needed for core functionality</string>
+    <string name="permission_granted">Location permission granted</string>
+    <string name="permission_denied_explanation">Permission was denied, but is needed for core
+        functionality.</string>
+    <string name="settings">Settings</string>
+    <string name="ok">OK</string>
+    <string name="request_location_updates">Request location updates</string>
+    <string name="remove_location_updates">Remove location updates</string>
+
+    <string name="location_updated">Location Updated: %1$s</string>
 </resources>

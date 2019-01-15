@@ -21,10 +21,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 /**
- * SecondActivity defines the second activity in the app. It is
+ * LocatorActivity defines the second activity in the app. It is
  * launched from an intent with a message, and sends an intent
  * back with a second message.
  */
@@ -46,19 +45,7 @@ public class SecondActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
-
-        // Initialize view variables.
-        mReply = findViewById(R.id.editText_second);
-
-        // Get the intent that launched this activity, and the message in
-        // the intent extra.
-        Intent intent = getIntent();
-        token = intent.getStringExtra(MainActivity.TOKEN_MESSAGE);
-
-        // Put that message into the text_message TextView
-        TextView textView = findViewById(R.id.text_token);
-        textView.setText(token);
+        setContentView(R.layout.activity_locator);
     }
 
     /**

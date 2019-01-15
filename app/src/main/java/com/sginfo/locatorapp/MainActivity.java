@@ -1,7 +1,13 @@
 package com.sginfo.locatorapp;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,10 +28,17 @@ import javax.net.ssl.SSLSocketFactory;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     // Unique tag required for the intent extra
     public static final String TOKEN_MESSAGE
             = "com.sginfo.android.locator.token.MESSAGE";
+    public static final String EXTRA_TOKEN               = "EXTRA_TOKEN";
+    public static final String EXTRA_USERNAME            = "EXTRA_USERNAME";
+    public static final String EXTRA_HARDWARE_ID         = "EXTRA_HARDWARE_ID";
+    public static final String EXTRA_MODE        = "EXTRA_MODE";
+    public static final String EXTRA_ONLINE        = "EXTRA_ONLINE";
     // Unique tag for the intent reply
     public static final int TEXT_REQUEST = 1;
     private int mCount = 0;
@@ -44,14 +57,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        android_id = Settings.Secure.getString(this.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
     }
 
-    public void checkCredentials(View view) {
+    public void startTrackingActivity(View view) {
+        Log.d(LOG_TAG, "Backdoor used!");
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions();
+        }else{
+            startLocatorActivity();
+        }
+    }
+        public void checkCredentials(View view) {
 
         iUsername = (TextView) findViewById(R.id.username);
         iPasword = (TextView) findViewById(R.id.password);
-        android_id = Settings.Secure.getString(this.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
         Log.d("Android", "Android ID : " + android_id);
         try {
             HttpCall httpCallPost = new HttpCall();
@@ -69,11 +92,11 @@ public class MainActivity extends AppCompatActivity {
             if (token != null) {
                 if (token.startsWith("TOKEN-")) {
                     // go to nex activity
-                    Log.d(LOG_TAG, "Button clicked!");
-                    Intent intent = new Intent(this, TrackingActivity.class);
-                    String message = token;
-                    intent.putExtra(TOKEN_MESSAGE, message);
-                    startActivityForResult(intent, TEXT_REQUEST);
+                    if(requestPermissions()){
+                        username = iUsername.getText().toString();
+                        startLocatorActivity();
+                    }
+                    Log.d(LOG_TAG, "Login successfull!");
                 } else if (token.startsWith("msg.")) {
                     //toast msg
                     Toast toast;
@@ -120,19 +143,71 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void saveTracking(View view) {
-        iUsername = (TextView) findViewById(R.id.username);
-        iPasword = (TextView) findViewById(R.id.password);
-        if (iUsername != null) {
-            tUsername.setText(iUsername.getText());
-            iUsername.setText("");
+    public boolean requestPermissions() {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]
+                            {Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION);
+        } else {
+            return true;
         }
-
-        Toast toast = Toast.makeText(this, R.string.label_username,
-                Toast.LENGTH_LONG);
-        String displayedText = ((TextView) ((LinearLayout) toast.getView()).getChildAt(0)).getText().toString();
-        toast.setText(displayedText + ": " + tUsername.getText());
-        toast.show();
-
+        return  false;
     }
+
+    public String getUsename() {
+        return iUsername.getText().toString();
+    }
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        Log.i(LOG_TAG, "onRequestPermissionResult");
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.length <= 0) {
+                // If user interaction was interrupted, the permission request is cancelled and you
+                // receive empty arrays.
+                Log.i(LOG_TAG, "User interaction was cancelled.");
+            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission was granted.
+                startLocatorActivity();
+
+            } else {
+                // Permission denied.
+                Snackbar.make(
+                        findViewById(R.id.activity_locator),
+                        R.string.no_location,
+                        Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.settings, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // Build intent that displays the App settings screen.
+                                Intent intent = new Intent();
+                                intent.setAction(
+                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package",
+                                        BuildConfig.APPLICATION_ID, null);
+                                intent.setData(uri);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                        })
+                        .show();
+            }
+        }
+    }
+
+    private void startLocatorActivity(){
+        Intent intent = new Intent(this, LocatorActivity.class);
+        intent.putExtra(EXTRA_TOKEN, (token!=null)?token:"none");
+        intent.putExtra(EXTRA_USERNAME, (username!=null)?username:"annonymous");
+        intent.putExtra(EXTRA_HARDWARE_ID, android_id);
+        intent.putExtra(EXTRA_MODE, (token!=null)?"online":"offline");
+        startActivity(intent);
+    }
+
 }

@@ -124,7 +124,7 @@ public class TrackingActivity extends AppCompatActivity implements
      * requests periodic location updates, sets a loading text and starts the
      * animation.
      */
-    private void startTrackingLocation() {
+    public void startTrackingLocation() {
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {

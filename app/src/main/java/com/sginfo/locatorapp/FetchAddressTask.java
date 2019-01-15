@@ -98,8 +98,8 @@ class FetchAddressTask extends AsyncTask<Location, Void, String> {
 
         }
         String locationString = location.getLongitude() + ", " + location.getLatitude();
-        System.out.println(resultMessage + ", " + location.getLongitude() + ", " + location.getLatitude());
-        resultMessage=locationString + ", " + resultMessage;
+        System.out.println("COORDENADAS: " + location.getLatitude() + ", " + location.getLongitude());
+        System.out.println(resultMessage);
         return resultMessage;
     }
 
